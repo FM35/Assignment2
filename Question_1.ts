@@ -1,4 +1,3 @@
-
 //f: A -> [A] -> [A]
 const push = <A>(a: A, l: Array<A>): Array<A> =>
             {   l[l.length] = a
