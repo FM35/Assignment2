@@ -1,8 +1,6 @@
 import { pipe } from "fp-ts/function";
 import fetch from "node-fetch"
 
-
-///////////////Question 2
 interface Entity {
   id: string;
 }
@@ -28,7 +26,6 @@ type ApiResponse<T extends Entity> =
 
 
 const fetchMockData = (typeOfData: "comments" | "posts") => {
-  
   if(typeOfData === "posts"){
     fetch('https://jsonplaceholder.typicode.com/posts')
     .then((response) => response.json())
@@ -42,9 +39,12 @@ const fetchMockData = (typeOfData: "comments" | "posts") => {
   }
 }
 
-fetchMockData("comments");
+const fetchComments = () => {
+  pipe("comments", fetchMockData)
+}
 
-// const fetchComments = () => {
-// }
-// const fetchPosts = () => {
-// }
+const fetchPosts = () => {
+  pipe("posts", fetchMockData)
+}
+
+fetchComments();

@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var function_1 = require("fp-ts/function");
 var node_fetch_1 = require("node-fetch");
 var fetchMockData = function (typeOfData) {
     if (typeOfData === "posts") {
@@ -13,8 +14,10 @@ var fetchMockData = function (typeOfData) {
             .then(function (json) { return console.log(json); });
     }
 };
-fetchMockData("comments");
-// const fetchComments = () => {
-// }
-// const fetchPosts = () => {
-// }
+var fetchComments = function () {
+    (0, function_1.pipe)("comments", fetchMockData);
+};
+var fetchPosts = function () {
+    (0, function_1.pipe)("posts", fetchMockData);
+};
+fetchComments();
