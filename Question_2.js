@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var function_1 = require("fp-ts/function");
 var node_fetch_1 = require("node-fetch");
+var success = function (data) { return { status: "success", data: data }; };
+var error = function (error) { return { status: "error", error: error }; };
 var fetchMockData = function (typeOfData) {
     if (typeOfData === "posts") {
         (0, node_fetch_1["default"])('https://jsonplaceholder.typicode.com/posts')
@@ -20,4 +22,3 @@ var fetchComments = function () {
 var fetchPosts = function () {
     (0, function_1.pipe)("posts", fetchMockData);
 };
-fetchComments();
