@@ -12,4 +12,6 @@ const splice = <A>(num1: number, num2: number, l: Array<A>): Array<A> => l.splic
 // const c =
 
 //f: [A] -> [B] -> [[A,B]]
-// const d = <A,B>
+const to2DArray = <A, B>(a: Array<A>, b: Array<B>): [A, B][] => {
+    return a.map((val, index) => [val, b[index]]);
+};
