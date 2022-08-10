@@ -1,24 +1,52 @@
-"use strict";
-exports.__esModule = true;
-var function_1 = require("fp-ts/function");
-var node_fetch_1 = require("node-fetch");
-var success = function (data) { return { status: "success", data: data }; };
-var error = function (error) { return { status: "error", error: error }; };
-var fetchMockData = function (typeOfData) {
-    if (typeOfData === "posts") {
-        (0, node_fetch_1["default"])('https://jsonplaceholder.typicode.com/posts')
-            .then(function (response) { return response.json(); })
-            .then(function (json) { return console.log(json); });
-    }
-    if (typeOfData === "comments") {
-        (0, node_fetch_1["default"])('https://jsonplaceholder.typicode.com/comments')
-            .then(function (response) { return response.json(); })
-            .then(function (json) { return console.log(json); });
-    }
-};
-var fetchComments = function () {
-    (0, function_1.pipe)("comments", fetchMockData);
-};
-var fetchPosts = function () {
-    (0, function_1.pipe)("posts", fetchMockData);
-};
+import fetch from "node-fetch";
+// interface Entity {
+//   id: string;
+// }
+// interface Post extends Entity {
+//   __tag: "post";
+//   userId: number;
+//   title: string;
+//   body: string;
+// }
+// interface Comment extends Entity {
+//   __tag: "comment";
+//   postId: number;
+//   name: string;
+//   email: string;
+//   body: string;
+// }
+// type ApiResponse<T extends Entity> =
+//   | { status: "success", data: T[] }
+//   | { status: "error", error: string };
+// const fetchMockData = (typeOfData: "comments" | "posts") => {
+//   if(typeOfData === "posts"){
+//     fetch('https://jsonplaceholder.typicode.com/posts')
+//     .then((response) => response.json())
+//     .then((json) => console.log(json));
+//   }
+//   if(typeOfData === "comments"){
+//     fetch('https://jsonplaceholder.typicode.com/comments')
+//     .then((response) => response.json())
+//     .then((json) => console.log(json));
+//   }
+// }
+// const fetchComments = () => {
+//   pipe("comments", fetchMockData)
+// }
+// const fetchPosts = () => {
+//   pipe("posts", fetchMockData)
+// }
+// const isSuccess = (api: ApiResponse<Comment>|ApiResponse<Post>): api is { status: "success", data: Comment[]} | { status: "success", data: Post[]} => api.status === "success";
+// const match = <T2>(
+//   someSuccess: (t: Comment[]|Post[]) => T2,
+//   someError: (error: string) => T2
+// ) => (api: ApiResponse<Comment>|ApiResponse<Post>): T2 =>{
+//   if(isSuccess(api)) return someSuccess(api.data);
+//   else return someError(api.error);
+// }
+async function getData() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/comments');
+    return response.json();
+}
+const data = await getData();
+console.log({ data });
