@@ -1,4 +1,3 @@
-import { pipe } from "fp-ts/function";
 import fetch from "node-fetch"
 
 interface Entity {
@@ -41,11 +40,11 @@ async function fetchMockData (typeOfData: "comments" | "posts"){
 }
 
 async function fetchComments (){
-  pipe("comments", fetchMockData)
+  fetchMockData("comments");
 }
 
 async function fetchPosts (){
-  pipe("posts", fetchMockData)
+  fetchMockData("posts");
 }
 
 const isSuccess = (api: ApiResponse<Comment>|ApiResponse<Post>): api is { status: "success", data: Comment[]} | { status: "success", data: Post[]} => api.status === "success";

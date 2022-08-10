@@ -1,4 +1,3 @@
-// import { pipe } from "fp-ts/function";
 import fetch from "node-fetch";
 async function fetchMockData(typeOfData) {
     if (typeOfData === "posts") {
@@ -10,12 +9,12 @@ async function fetchMockData(typeOfData) {
         return response;
     }
 }
-// async function fetchComments (){
-//   pipe("comments", fetchMockData)
-// }
-// async function fetchPosts (){
-//   pipe("posts", fetchMockData)
-// }
+async function fetchComments() {
+    fetchMockData("comments");
+}
+async function fetchPosts() {
+    fetchMockData("posts");
+}
 const isSuccess = (api) => api.status === "success";
 const match = (someSuccess, someError) => (api) => {
     if (isSuccess(api))
