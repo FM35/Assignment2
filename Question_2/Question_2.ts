@@ -61,3 +61,5 @@ const match = <T2>(
 const data = await fetchMockData("comments");
 
 console.log({ data })
+
+//Post id from comments relates to id of post
