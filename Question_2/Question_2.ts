@@ -45,7 +45,7 @@ const match =
 
 async function fetchMockData(typeOfData: "comments" | "posts") {
   if (typeOfData === "posts") {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?");
 
     return response;
   }
@@ -59,25 +59,33 @@ async function fetchMockData(typeOfData: "comments" | "posts") {
   }
 }
 
-async function fetchComments(): Promise<ApiResponse<Comment>> {
+async function fetchComments(postId: number): Promise<ApiResponse<Comment>> {
+  //Could have used pipe("comments", fetchMockData) here but I was fighting with the tsconfig regarding the use of a top level await and import pipe from fp-ts at the same time
   const response = await fetchMockData("comments");
   const data: Comment[] = await response?.json();
+  const filterData = data.filter((d) => {
+    return d.postId == postId;
+  });
   const statusText = response?.statusText as string;
 
   if (statusText == "OK") {
-    return { status: "success", data: data };
+    return { status: "success", data: filterData };
   } else {
     return { status: "error", error: statusText };
   }
 }
 
-async function fetchPosts(): Promise<ApiResponse<Post>> {
+async function fetchPosts(id: string): Promise<ApiResponse<Post>> {
+  //Could have used pipe("posts", fetchMockData) here but I was fighting with the tsconfig regarding the use of a top level await and import pipe from fp-ts at the same time
   const response = await fetchMockData("posts");
   const data: Post[] = await response?.json();
+  const filterData = data.filter((d) => {
+    return d.id == id;
+  });
   const statusText = response?.statusText as string;
 
   if (statusText == "OK") {
-    return { status: "success", data: data };
+    return { status: "success", data: filterData };
   } else {
     return { status: "error", error: statusText };
   }
@@ -85,10 +93,10 @@ async function fetchPosts(): Promise<ApiResponse<Post>> {
 
 //----------------------------------------------Program-------------------------------------//
 
-const CommentData = await fetchComments();
-const PostData = await fetchPosts();
+const PostData = await fetchPosts("1");
+const CommentData = await fetchComments(1);
 
-console.log(CommentData);
 console.log(PostData);
+console.log(CommentData);
 
 //Post id from comments relates to id of post
