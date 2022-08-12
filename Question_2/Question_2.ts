@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
 
+//----------------------------------------------Interfaces, Types, Type Guards and Match-------------------------------------//
+
 interface Entity {
   id: string;
 }
@@ -23,30 +25,6 @@ type ApiResponse<T extends Entity> =
   | { status: "success"; data: T[] }
   | { status: "error"; error: string };
 
-async function fetchMockData(typeOfData: "comments" | "posts") {
-  if (typeOfData === "posts") {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-
-    return response;
-  }
-
-  if (typeOfData === "comments") {
-    const response = await fetch(
-      "https://jsonplaceholder.typicode.com/comments"
-    );
-
-    return response;
-  }
-}
-
-async function fetchComments() {
-  return fetchMockData("comments");
-}
-
-async function fetchPosts() {
-  return fetchMockData("posts");
-}
-
 const isSuccess = (
   api: ApiResponse<Comment> | ApiResponse<Post>
 ): api is
@@ -63,8 +41,54 @@ const match =
     else return someError(api.error);
   };
 
-const data = await fetchComments();
+//----------------------------------------------Interfaces, Types, Type Guards and Match-------------------------------------//
 
-console.log({ data });
+async function fetchMockData(typeOfData: "comments" | "posts") {
+  if (typeOfData === "posts") {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+
+    return response;
+  }
+
+  if (typeOfData === "comments") {
+    const response = await fetch(
+      "https://jsonplaceholder.typicode.com/comments"
+    );
+
+    return response;
+  }
+}
+
+async function fetchComments(): Promise<ApiResponse<Comment>> {
+  const response = await fetchMockData("comments");
+  const data: Comment[] = await response?.json();
+  const statusText = response?.statusText as string;
+
+  if (statusText == "OK") {
+    return { status: "success", data: data };
+  } else {
+    return { status: "error", error: statusText };
+  }
+}
+
+async function fetchPosts(): Promise<ApiResponse<Post>> {
+  const response = await fetchMockData("posts");
+  const data: Post[] = await response?.json();
+  const statusText = response?.statusText as string;
+
+  if (statusText == "OK") {
+    return { status: "success", data: data };
+  } else {
+    return { status: "error", error: statusText };
+  }
+}
+
+//----------------------------------------------Program-------------------------------------//
+
+const CommentData = await fetchComments();
+const PostData = await fetchPosts();
+
+console.log(CommentData);
+console.log(PostData);
 
 //Post id from comments relates to id of post
