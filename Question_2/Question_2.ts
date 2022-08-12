@@ -93,10 +93,22 @@ async function fetchPosts(id: string): Promise<ApiResponse<Post>> {
 
 //----------------------------------------------Program-------------------------------------//
 
-const PostData = await fetchPosts("1");
-const CommentData = await fetchComments(1);
+//Fetches the first posts and all the comments on that post
+const PostsData = await fetchPosts("1");
+const CommentsData = await fetchComments(1);
 
-console.log(PostData);
-console.log(CommentData);
+//A very basic set-up, but in this case returning true represents a JSX Element that displays the Post on UI and false returns an Error Page
+const someSuccess = (t: Comment[] | Post[]): boolean => {
+  console.log(true);
+  return true;
+};
+const someError = (error: string): boolean => {
+  console.log(false);
+  return false;
+};
 
-//Post id from comments relates to id of post
+// console.log(PostsData);
+// console.log(CommentsData);
+
+match(someSuccess, someError)(PostsData);
+match(someSuccess, someError)(CommentsData);

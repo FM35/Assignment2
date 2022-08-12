@@ -18,6 +18,7 @@ async function fetchMockData(typeOfData) {
     }
 }
 async function fetchComments(postId) {
+    //Could have used pipe("comments", fetchMockData) here but I was fighting with the tsconfig regarding the use of a top level await and import pipe from fp-ts at the same time
     const response = await fetchMockData("comments");
     const data = await (response === null || response === void 0 ? void 0 : response.json());
     const filterData = data.filter((d) => {
@@ -32,6 +33,7 @@ async function fetchComments(postId) {
     }
 }
 async function fetchPosts(id) {
+    //Could have used pipe("posts", fetchMockData) here but I was fighting with the tsconfig regarding the use of a top level await and import pipe from fp-ts at the same time
     const response = await fetchMockData("posts");
     const data = await (response === null || response === void 0 ? void 0 : response.json());
     const filterData = data.filter((d) => {
@@ -46,8 +48,19 @@ async function fetchPosts(id) {
     }
 }
 //----------------------------------------------Program-------------------------------------//
-const CommentData = await fetchComments(1);
-const PostData = await fetchPosts("1");
-console.log(CommentData);
-console.log(PostData);
-//Post id from comments relates to id of post
+//Fetches the first posts and all the comments on that post
+const PostsData = await fetchPosts("1");
+const CommentsData = await fetchComments(1);
+//A very basic set-up, but in this case returning true represents a JSX Element that displays the Post on UI and false returns an Error Page
+const someSuccess = (t) => {
+    console.log(true);
+    return true;
+};
+const someError = (error) => {
+    console.log(false);
+    return false;
+};
+// console.log(PostsData);
+// console.log(CommentsData);
+match(someSuccess, someError)(PostsData);
+match(someSuccess, someError)(CommentsData);
