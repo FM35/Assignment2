@@ -24,3 +24,4 @@ const match = (someSuccess, someError) => (api) => {
 };
 const data = await fetchMockData("comments");
 console.log({ data });
+//Post id from comments relates to id of post
